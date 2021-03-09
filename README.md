@@ -4,6 +4,7 @@ Two build modes are available:
 
 * Build mode 1 produces an .msi package to be used on Windows
 * Build mode 2 produces a multiplatform .NET Core artifact
+* Build mode 3 produces a multiplatform .NET Core artifact in a docker container
 
 ## Build mode 1
 Build prerequisites:
@@ -120,3 +121,12 @@ The system must be able to find the native libraries under the swig/native_clien
 Infinispan uses JIRA for issue management, hosted on issues.jboss.org
 (https://issues.jboss.org/browse/HRCPP). You can log in using your jboss.org
 username and password.
+
+## Build mode 3
+
+Create a docker image using `Dockerfile.3.1-RHEL` file `docker build -t hotrodbuildclient:3.1-RHEL -f Dockerfile.31-RHEL .`. The image will have all the necessary dependencies to build the lib.
+
+Run the image mounting a volume with the source code `docker run -it -v ./dotnet-client-infinispan:/src hotrodbuildclient:3.1-RHEL /bin/bash` then in the container console execute `./build.sh Build`.
+
+After the build you need to set the env variable `ARCH=linux-x64` and then run `./build.sh QuickPack` to generate the nuget package `Infinispan.HotRod.linux-x64.8.2.0-Alpha2.nupkg`. You could find the nuget package at `src/Infinispan.HotRod/bin/RelWithDebInfo`
+

@@ -145,7 +145,7 @@ let downloadCppClientIfNonexist cppClientVersion =
         let cppLinuxClientRpmName = sprintf "infinispan-hotrod-cpp-%s-RHEL-x86_64.rpm" cppClientVersion
         if not (Directory.Exists cppLinuxClientDirectory) then
             let cppClientUrl = if cppClientVersion.Contains("SNAPSHOT")
-                               then (sprintf "http://ci.infinispan.org/job/Infinispan%%20C++%%20Client/job/master/lastSuccessfulBuild/artifact/build/_CPack_Packages/RHEL-x86_64/RPM/infinispan-hotrod-cpp-%s-RHEL-x86_64.rpm" cppClientVersion)
+                               then (sprintf "http://ci.infinispan.org/job/Infinispan%%20C++%%20Client/job/master/lastSuccessfulBuild/artifact/build/infinispan-hotrod-cpp-%s-RHEL-x86_64.rpm" cppClientVersion)
                                else (sprintf "http://downloads.jboss.org/infinispan/HotRodCPP/%s/infinispan-hotrod-cpp-%s-RHEL-x86_64.rpm" cppClientVersion cppClientVersion)
             trace ("downloadCppClientIfNonexist: downloading cpp-linux-client version " <+ cppClientVersion)
             downloadArtifact cppClientUrl "tmp" cppLinuxClientRpmName

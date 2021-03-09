@@ -1,0 +1,25 @@
+FROM registry.access.redhat.com/ubi8/dotnet-31:3.1
+USER 0
+RUN rpmkeys --import http://pool.sks-keyservers.net/pks/lookup?op=get&search=0x3fa7e0328081bff6a14da29aa6a19b38d3d831ef
+RUN curl https://download.mono-project.com/repo/centos8-stable.repo | tee /etc/yum.repos.d/mono-centos8-stable.repo
+
+RUN yum install -y mono-devel
+
+RUN dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+RUN yum install -y wget gcc make gcc-c++ cyrus-sasl-devel cpio
+
+ENV swig_version=4.0.2
+# Install swig
+RUN curl -SL --output swig.tar.gz http://prdownloads.sourceforge.net/swig/swig-$swig_version.tar.gz \
+    && tar -ozxf swig.tar.gz -C /opt \
+    && rm swig.tar.gz 
+
+WORKDIR /opt/swig-${swig_version}
+RUN ./configure --prefix=/usr/share/swigtool && make && make install
+
+ENV SWIG_PATH=/usr/share/swigtool/bin
+ENV PATH=$SWIG_PATH:$PATH
+
+WORKDIR /src
+
+CMD ["./build.sh", "Build"]
