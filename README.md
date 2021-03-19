@@ -124,9 +124,24 @@ username and password.
 
 ## Build mode 3
 
-Create a docker image using `Dockerfile.3.1-RHEL` file `docker build -t hotrodbuildclient:3.1-RHEL -f Dockerfile.31-RHEL .`. The image will have all the necessary dependencies to build the lib.
+Create a docker image using `Dockerfile.3.1-RHEL` file.
+```
+docker build -t hotrodbuildclient:3.1-RHEL -f Dockerfile.31-RHEL .
+``` 
 
-Run the image mounting a volume with the source code `docker run -it -v ./dotnet-client-infinispan:/src hotrodbuildclient:3.1-RHEL /bin/bash` then in the container console execute `./build.sh Build`.
+The image will have all the necessary dependencies to build the lib.
 
-After the build you need to set the env variable `ARCH=linux-x64` and then run `./build.sh QuickPack` to generate the nuget package `Infinispan.HotRod.linux-x64.8.2.0-Alpha2.nupkg`. You could find the nuget package at `src/Infinispan.HotRod/bin/RelWithDebInfo`
+Run the image mounting a volume with the source code 
+```
+docker run -it -v ./dotnet-client-infinispan:/src hotrodbuildclient:3.1-RHEL /bin/bash
+``` 
+This command will give you access to the linux console. Then in console execute the following to build de lib.
+```
+./build.sh Build
+```
+After the build you will need to set the environment variable `ARCH=linux-x64` and then run 
+```
+./build.sh QuickPack
+``` 
+to generate the nuget package `Infinispan.HotRod.linux-x64.8.2.0-Alpha2.nupkg`. You will find the nuget package at `src/Infinispan.HotRod/bin/RelWithDebInfo`. Then you can push the nuget to some nuget server to start using it.
 
